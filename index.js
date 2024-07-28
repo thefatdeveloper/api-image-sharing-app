@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const multer = require("multer");
 const path = require("path");
-
+const cors = require("cors");
 dotenv.config();
 
 // Import Routes (Uncomment these lines when you have the routes defined)
@@ -38,7 +38,11 @@ function startServer() {
   app.use(express.json());
   app.use(helmet());
   app.use(morgan("common"));
-
+  app.use(
+    cors({
+      origin: "*",
+    })
+  );
   // Mount Routes to paths (Uncomment these lines when you have the routes defined)
   app.use("/api/users", userRoute);
   app.use("/api/auth", authRoute);
@@ -71,8 +75,9 @@ function startServer() {
   });
 
   // Start the server
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 8000;
   app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
+    console.log(path.join(__dirname, "public/images"));
   });
 }

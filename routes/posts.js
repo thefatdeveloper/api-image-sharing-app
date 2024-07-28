@@ -6,7 +6,7 @@ const fs = require("fs");
 // create an image post
 router.post("/", async (req, res) => {
   // check if the image is a url or a file
-  let checkUrl = req.body.img.split("https");
+  let checkUrl = req.body?.img?.split("https");
   let isUrl = false;
 
   // if the image is a url, set isUrl to true
@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
   // if the image is a file, encode it to base64
   if (!isUrl) {
     base64str = base64_encode(
-      `/usercode/image_sharing_app/api/public/images/${req.body.img}`
+      `/project/workspace/public/images/${req.body.img}`
     );
   }
 
