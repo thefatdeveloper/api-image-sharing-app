@@ -1,5 +1,24 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const cors = require('cors');
+
+const corsOptions = {
+  origin: '',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+// Apply CORS to the router
+router.use(cors(corsOptions));
+
+// Logging middleware
+router.use((req, res, next) => {
+  console.log(`Incoming ${req.method} request to ${req.path}`);
+  next();
+});
+
 
 router.post("/register", async (req, res) => {
   try {
@@ -52,6 +71,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Respond with the user if the email and password are valid
+    
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);

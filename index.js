@@ -33,16 +33,30 @@ mongoose
 
 // Function to start the server after MongoDB connection is successful
 function startServer() {
+
+  app.use((req, res, next) => {
+    console.log('Incoming request:', req.method, req.path);
+    next();
+  });
   // Middleware
+  const corsOptions = {
+    origin: '',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
+  };
+
+  app.use(cors(corsOptions));
+  app.use((req, res, next) => {
+    console.log('CORS headers set:', res.getHeaders());
+    next();
+  });
   app.use("/images", express.static(path.join(__dirname, "public/images")));
   app.use(express.json());
   app.use(helmet());
   app.use(morgan("common"));
-  app.use(
-    cors({
-      origin: "*",
-    })
-  );
+ 
   // Mount Routes to paths (Uncomment these lines when you have the routes defined)
   app.use("/api/users", userRoute);
   app.use("/api/auth", authRoute);
